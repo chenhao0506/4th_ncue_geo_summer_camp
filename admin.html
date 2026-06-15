@@ -103,6 +103,36 @@
         </form>
         <p id="record-message" class="message" role="status"></p>
       </section>
+
+      <section id="records-panel" class="panel hidden">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">主辦方檢視</p>
+            <h2>已輸入名單</h2>
+          </div>
+          <button id="refresh-records-button" class="secondary" type="button">重新整理</button>
+        </div>
+        <div class="table-wrap">
+          <table class="records-table">
+            <thead>
+              <tr>
+                <th>學員姓名</th>
+                <th>學校</th>
+                <th>報名狀態</th>
+                <th>是否繳費</th>
+                <th>繳費截止</th>
+                <th>操作</th>
+              </tr>
+            </thead>
+            <tbody id="records-body">
+              <tr>
+                <td colspan="6">登入後可查看已輸入資料。</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <p id="records-message" class="message" role="status"></p>
+      </section>
     </main>
 
     <script type="module" src="admin.js"></script>

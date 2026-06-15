@@ -6,8 +6,10 @@ import {
   signOut,
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import {
+  collection,
   doc,
   getDoc,
+  getDocs,
   getFirestore,
   serverTimestamp,
   setDoc,
@@ -21,8 +23,10 @@ const db = getFirestore(app);
 
 const loginPanel = document.querySelector("#login-panel");
 const adminPanel = document.querySelector("#admin-panel");
+const recordsPanel = document.querySelector("#records-panel");
 const loginForm = document.querySelector("#login-form");
 const recordForm = document.querySelector("#record-form");
+const recordsBody = document.querySelector("#records-body");
 
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
@@ -42,11 +46,14 @@ loginForm.addEventListener("submit", async (event) => {
 document.querySelector("#logout-button").addEventListener("click", () => signOut(auth));
 document.querySelector("#clear-form-button").addEventListener("click", clearRecordForm);
 document.querySelector("#load-record-button").addEventListener("click", loadCurrentRecord);
+document.querySelector("#refresh-records-button").addEventListener("click", loadRecordsList);
 
 onAuthStateChanged(auth, (user) => {
   const loggedIn = Boolean(user);
   loginPanel.classList.toggle("hidden", loggedIn);
   adminPanel.classList.toggle("hidden", !loggedIn);
+  recordsPanel.classList.toggle("hidden", !loggedIn);
+  if (loggedIn) loadRecordsList();
 });
 
 recordForm.addEventListener("submit", async (event) => {
@@ -56,7 +63,8 @@ recordForm.addEventListener("submit", async (event) => {
   try {
     const record = getRecordFromForm();
     await saveRecord(record);
-    setMessage("#record-message", "已儲存。家長可用學員姓名與電子郵件查詢。", "success");
+    setMessage("#record-message", "已儲存。家長可用學員姓名查詢。", "success");
+    await loadRecordsList();
   } catch (error) {
     setMessage("#record-message", `儲存失敗：${error.message}`, "error");
   }
@@ -79,6 +87,48 @@ async function loadCurrentRecord() {
   } catch (error) {
     setMessage("#record-message", `載入失敗：${error.message}`, "error");
   }
+}
+
+async function loadRecordsList() {
+  setMessage("#records-message", "載入名單中。");
+  recordsBody.innerHTML = `<tr><td colspan="6">載入中...</td></tr>`;
+
+  try {
+    const snapshot = await getDocs(collection(db, "registrations"));
+    const records = snapshot.docs
+      .map((item) => ({ id: item.id, ...item.data() }))
+      .sort((a, b) => String(a.studentName || "").localeCompare(String(b.studentName || ""), "zh-Hant"));
+
+    if (records.length === 0) {
+      recordsBody.innerHTML = `<tr><td colspan="6">目前尚未輸入資料。</td></tr>`;
+      setMessage("#records-message", "");
+      return;
+    }
+
+    recordsBody.replaceChildren(...records.map(createRecordRow));
+    setMessage("#records-message", `目前共 ${records.length} 筆資料。`, "success");
+  } catch (error) {
+    recordsBody.innerHTML = `<tr><td colspan="6">名單載入失敗。</td></tr>`;
+    setMessage("#records-message", `名單載入失敗：${error.message}`, "error");
+  }
+}
+
+function createRecordRow(record) {
+  const row = document.createElement("tr");
+  row.innerHTML = `
+    <td>${escapeHtml(record.studentName || "-")}</td>
+    <td>${escapeHtml(record.school || "-")}</td>
+    <td>${escapeHtml(record.status || "-")}</td>
+    <td>${record.paid ? "已繳費" : "未繳費"}</td>
+    <td>${escapeHtml(record.paymentDeadline || "-")}</td>
+    <td><button class="secondary small-button" type="button">載入</button></td>
+  `;
+  row.querySelector("button").addEventListener("click", () => {
+    fillRecordForm(record);
+    setMessage("#record-message", `已載入 ${record.studentName || "這筆資料"}，修改後按「儲存 / 更新」。`, "success");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  });
+  return row;
 }
 
 async function saveRecord(record) {
@@ -137,6 +187,15 @@ function setMessage(selector, text, type = "") {
   const element = document.querySelector(selector);
   element.textContent = text;
   element.className = `message ${type}`.trim();
+}
+
+function escapeHtml(value) {
+  return String(value)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 }
 
 function toDateInput(value) {

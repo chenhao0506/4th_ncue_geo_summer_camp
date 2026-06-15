@@ -264,6 +264,34 @@ dd {
   margin-top: -6px;
 }
 
+.table-wrap {
+  overflow-x: auto;
+}
+
+.records-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 760px;
+}
+
+.records-table th,
+.records-table td {
+  border-bottom: 1px solid var(--line);
+  padding: 12px 10px;
+  text-align: left;
+  vertical-align: middle;
+}
+
+.records-table th {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.small-button {
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+
 .hidden {
   display: none;
 }
