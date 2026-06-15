@@ -7,6 +7,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
 import {
   collection,
+  deleteDoc,
   doc,
   getDoc,
   getDocs,
@@ -121,14 +122,40 @@ function createRecordRow(record) {
     <td>${escapeHtml(record.status || "-")}</td>
     <td>${record.paid ? "已繳費" : "未繳費"}</td>
     <td>${escapeHtml(record.paymentDeadline || "-")}</td>
-    <td><button class="secondary small-button" type="button">載入</button></td>
+    <td>
+      <div class="row-actions">
+        <button class="secondary small-button load-record" type="button">載入</button>
+        <button class="danger small-button delete-record" type="button">刪除</button>
+      </div>
+    </td>
   `;
-  row.querySelector("button").addEventListener("click", () => {
+  row.querySelector(".load-record").addEventListener("click", () => {
     fillRecordForm(record);
     setMessage("#record-message", `已載入 ${record.studentName || "這筆資料"}，修改後按「儲存 / 更新」。`, "success");
     window.scrollTo({ top: 0, behavior: "smooth" });
   });
+  row.querySelector(".delete-record").addEventListener("click", () => deleteRecord(record));
   return row;
+}
+
+async function deleteRecord(record) {
+  const name = record.studentName || "這筆資料";
+  const confirmed = window.confirm(`確定要刪除「${name}」嗎？刪除後家長將查不到這筆資料。`);
+  if (!confirmed) return;
+
+  setMessage("#records-message", `正在刪除 ${name}。`);
+  try {
+    await deleteDoc(doc(db, "registrations", record.id));
+
+    if (document.querySelector("#edit-student-name").value.trim() === record.studentName) {
+      clearRecordForm();
+    }
+
+    setMessage("#records-message", `已刪除 ${name}。`, "success");
+    await loadRecordsList();
+  } catch (error) {
+    setMessage("#records-message", `刪除失敗：${error.message}`, "error");
+  }
 }
 
 async function saveRecord(record) {
