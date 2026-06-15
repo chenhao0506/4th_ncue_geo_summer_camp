@@ -1,0 +1,98 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>第四屆彰師地理探索營｜報名即時動態</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <nav class="nav">
+        <a class="brand" href="./">第四屆彰師地理探索營</a>
+        <a class="nav-link" href="admin.html">主辦方登入</a>
+      </nav>
+      <section class="hero">
+        <p class="eyebrow">報名即時動態查詢</p>
+        <h1>輸入學員姓名，查詢目前報名狀況。</h1>
+        <p class="hero-copy">
+          為保護個資，本頁不公開完整名單與目前報名人數；查詢時只會顯示符合資料的單一報名紀錄。
+        </p>
+      </section>
+    </header>
+
+    <main class="layout">
+      <section class="panel">
+        <h2>報名查詢</h2>
+        <form id="lookup-form" class="form">
+          <label>
+            學員姓名
+            <input id="student-name" name="studentName" autocomplete="name" required placeholder="例如：王小明" />
+          </label>
+          <button type="submit" id="lookup-button">查詢報名狀況</button>
+        </form>
+        <p id="lookup-message" class="message" role="status"></p>
+      </section>
+
+      <section id="result-card" class="result hidden" aria-live="polite">
+        <div class="result-head">
+          <div>
+            <p class="eyebrow">查詢結果</p>
+            <h2 id="result-name">-</h2>
+          </div>
+          <span id="status-badge" class="badge">-</span>
+        </div>
+        <dl class="details">
+          <div>
+            <dt>學校</dt>
+            <dd id="result-school">-</dd>
+          </div>
+          <div>
+            <dt>電子郵件</dt>
+            <dd id="result-email">-</dd>
+          </div>
+          <div>
+            <dt>填寫表單時間</dt>
+            <dd id="result-submitted-at">-</dd>
+          </div>
+          <div>
+            <dt>選擇報名天數 / 場次</dt>
+            <dd id="result-days">-</dd>
+          </div>
+          <div>
+            <dt>主辦方通知繳費日期</dt>
+            <dd id="result-notice-date">-</dd>
+          </div>
+          <div>
+            <dt>繳費截止期限</dt>
+            <dd id="result-deadline">-</dd>
+          </div>
+          <div>
+            <dt>是否繳費</dt>
+            <dd id="result-paid">-</dd>
+          </div>
+          <div>
+            <dt>備註</dt>
+            <dd id="result-note">-</dd>
+          </div>
+        </dl>
+      </section>
+
+      <section class="notice">
+        <h2>報名流程提醒</h2>
+        <ol>
+          <li>送出報名表單後，主辦方會依報名資料更新本查詢系統。</li>
+          <li>收到繳費通知後，請於繳費截止期限前完成繳費。</li>
+          <li>主辦方確認款項後，狀態會更新為已繳費或報名成功。</li>
+          <li>若查不到資料，請確認姓名是否與報名時填寫完全一致。</li>
+        </ol>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <p>第四屆彰師地理探索營報名即時動態網</p>
+    </footer>
+
+    <script type="module" src="app.js"></script>
+  </body>
+</html>

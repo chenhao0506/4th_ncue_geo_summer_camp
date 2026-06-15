@@ -32,12 +32,11 @@ form.addEventListener("submit", async (event) => {
 
   try {
     const studentName = document.querySelector("#student-name").value;
-    const email = document.querySelector("#email").value;
-    const recordId = await makeRecordId(studentName, email);
+    const recordId = await makeRecordId(studentName);
     const snapshot = await getDoc(doc(db, "registrations", recordId));
 
     if (!snapshot.exists()) {
-      setMessage("查無符合資料。請確認姓名與電子郵件是否與報名時填寫一致。", "error");
+      setMessage("查無符合資料。請確認姓名是否與報名時填寫一致。", "error");
       return;
     }
 

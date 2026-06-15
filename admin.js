@@ -66,8 +66,7 @@ async function loadCurrentRecord() {
   setMessage("#record-message", "載入中。");
   try {
     const studentName = document.querySelector("#edit-student-name").value;
-    const email = document.querySelector("#edit-email").value;
-    const id = await makeRecordId(studentName, email);
+    const id = await makeRecordId(studentName);
     const snapshot = await getDoc(doc(db, "registrations", id));
 
     if (!snapshot.exists()) {
@@ -87,7 +86,7 @@ async function saveRecord(record) {
     throw new Error("學員姓名與電子郵件為必填。");
   }
 
-  const id = await makeRecordId(record.studentName, record.email);
+  const id = await makeRecordId(record.studentName);
   await setDoc(
     doc(db, "registrations", id),
     {
