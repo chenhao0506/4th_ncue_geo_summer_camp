@@ -1,0 +1,24 @@
+# Do not publish source spreadsheets, documents, or planning files.
+*.xlsx
+*.xls
+*.csv
+*.docx
+*.pdf
+
+# Local/editor files.
+.DS_Store
+Thumbs.db
+.vscode/
+
+# Keep website source files tracked. If you want the current background image
+# on GitHub Pages, upload this one image or replace the CSS background URL.
+!index.html
+!admin.html
+!styles.css
+!app.js
+!admin.js
+!shared.js
+!firebase-config.js
+!firebase-config.example.js
+!firestore.rules
+!README.md

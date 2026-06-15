@@ -1,0 +1,110 @@
+<!doctype html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>主辦方管理｜第四屆彰師地理探索營</title>
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header compact">
+      <nav class="nav">
+        <a class="brand" href="./">第四屆彰師地理探索營</a>
+        <a class="nav-link" href="./">家長查詢頁</a>
+      </nav>
+      <section class="hero">
+        <p class="eyebrow">主辦方管理</p>
+        <h1>新增與更新報名即時動態。</h1>
+      </section>
+    </header>
+
+    <main class="layout admin-layout">
+      <section id="login-panel" class="panel">
+        <h2>主辦方登入</h2>
+        <form id="login-form" class="form">
+          <label>
+            管理者電子郵件
+            <input id="admin-email" type="email" autocomplete="email" required />
+          </label>
+          <label>
+            密碼
+            <input id="admin-password" type="password" autocomplete="current-password" required />
+          </label>
+          <button type="submit">登入</button>
+        </form>
+        <p id="login-message" class="message" role="status"></p>
+      </section>
+
+      <section id="admin-panel" class="panel hidden">
+        <div class="section-head">
+          <div>
+            <p class="eyebrow">已登入</p>
+            <h2>編輯單筆報名資料</h2>
+          </div>
+          <button id="logout-button" class="secondary" type="button">登出</button>
+        </div>
+
+        <form id="record-form" class="form grid-form">
+          <label>
+            學員姓名
+            <input id="edit-student-name" required />
+          </label>
+          <label>
+            學校
+            <input id="edit-school" />
+          </label>
+          <label>
+            電子郵件
+            <input id="edit-email" type="email" required />
+          </label>
+          <label>
+            填寫表單時間
+            <input id="edit-submitted-at" type="datetime-local" />
+          </label>
+          <label>
+            選擇報名天數 / 場次
+            <textarea id="edit-days" rows="3" placeholder="例如：第一天、第二天"></textarea>
+          </label>
+          <label>
+            報名狀態
+            <select id="edit-status">
+              <option>待主辦方確認</option>
+              <option>已通知繳費</option>
+              <option>已繳費</option>
+              <option>報名成功</option>
+              <option>備取</option>
+              <option>取消報名</option>
+            </select>
+          </label>
+          <label>
+            主辦方通知繳費日期
+            <input id="edit-notice-date" type="date" />
+          </label>
+          <label>
+            繳費截止期限
+            <input id="edit-deadline" type="date" />
+          </label>
+          <label>
+            是否繳費
+            <select id="edit-paid">
+              <option value="false">未繳費</option>
+              <option value="true">已繳費</option>
+            </select>
+          </label>
+          <label class="wide">
+            備註
+            <textarea id="edit-note" rows="3"></textarea>
+          </label>
+          <div class="actions wide">
+            <button type="submit">儲存 / 更新</button>
+            <button id="load-record-button" class="secondary" type="button">用姓名與 Email 載入</button>
+            <button id="clear-form-button" class="secondary" type="button">清空表單</button>
+          </div>
+        </form>
+        <p id="record-message" class="message" role="status"></p>
+      </section>
+    </main>
+
+    <script type="module" src="admin.js"></script>
+  </body>
+</html>
