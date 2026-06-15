@@ -30,7 +30,7 @@ a {
 .site-header {
   background:
     linear-gradient(rgba(15, 41, 27, 0.68), rgba(15, 41, 27, 0.5)),
-    url("實察照片/給月零/黑泥田1.jpg") center/cover;
+    url("banner.png") center/cover;
   color: #fff;
   min-height: 420px;
 }
